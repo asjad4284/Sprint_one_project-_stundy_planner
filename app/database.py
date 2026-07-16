@@ -4,5 +4,10 @@ from  sqlalchemy.orm import  sessionmaker,declarative_base
 database_url= "mysql+pymysql://saqlain:shah001@localhost/study_planner"
 engine =create_engine(database_url)
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
-
-Base = declarative_base()
+Base=declarative_base()
+def get_db(): # using dependence
+    db=SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
