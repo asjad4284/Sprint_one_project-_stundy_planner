@@ -51,6 +51,16 @@ class ProgressResponse(BaseModel):
     schedule_id: int
     class Config:
         from_attribute = True
+
+class WeeklyReport(BaseModel):
+    total: int 
+    completed: int
+    pending :int 
+    precent : float
+    [by_day] : Dict[str, int]
+
+    
+
         
             
 
