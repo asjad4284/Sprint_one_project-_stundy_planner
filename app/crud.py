@@ -67,7 +67,7 @@ def get_schedule_for_user(db:Session,user_id :int):
     return[{
         "id": s.id , "day":s.dat,"duration":s.duration,"subject":s.subject_id,"subject_name":name
     }
-    for s ,name in rows]
+    for s ,name in rows ]
  
 
 
