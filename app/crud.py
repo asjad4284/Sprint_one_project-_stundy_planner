@@ -37,3 +37,13 @@ def create_subject(db:Session, subject):
 
 def get_subject(db :Session, user_id :int):
     return db.query(model.subject).filter(model.subject.user_id==user_id).all()
+
+def del_suject(db:Session , subject_id :int):
+    obj = db.query(model.subject).filter(model.subject.id==subject_id).first()
+    if  not obj:
+        return None
+
+    db.delete(obj)
+    db.commit()
+    return True
+
