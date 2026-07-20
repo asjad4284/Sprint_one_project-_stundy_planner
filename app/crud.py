@@ -47,3 +47,27 @@ def del_suject(db:Session , subject_id :int):
     db.commit()
     return True
 
+
+def cerate_schedule(db :Session ,schedule):
+    obj = model.schedule(**schedule.dict())
+    db.add(obj)
+    db.commit()
+    db.refresh(obj)
+
+    progess =  model.progress(status ="pending" ,schedule_id=obj.id)
+    db.add(progess)
+    db.commit()
+    db.refresh(obj)
+    return obj
+    
+def get_schedule_for_user(db:Session,user_id :int):
+    rows =(db.query(model.schedule, model.subject.name).join(model.subject, model.schedule.subject.id==model.subject.id)
+          .filter(model.subject.user_id==user_id).all())
+    
+    return[{
+        "id": s.id , "day":s.dat,"duration":s.duration,"subject":s.subject_id,"subject_name":name
+    }
+    for s ,name in rows]
+ 
+
+
