@@ -34,3 +34,6 @@ def create_subject(db:Session, subject):
     db.refresh(obj)
     return obj
 
+
+def get_subject(db :Session, user_id :int):
+    return db.query(model.subject).filter(model.subject.user_id==user_id).all()
