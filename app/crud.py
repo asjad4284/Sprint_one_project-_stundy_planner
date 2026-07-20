@@ -48,7 +48,7 @@ def del_suject(db:Session , subject_id :int):
     return True
 
 
-def cerate_schedule(db :Session ,schedule):
+def create_schedule(db :Session ,schedule):
     obj = model.schedule(**schedule.dict())
     db.add(obj)
     db.commit()
@@ -61,13 +61,29 @@ def cerate_schedule(db :Session ,schedule):
     return obj
     
 def get_schedule_for_user(db:Session,user_id :int):
-    rows =(db.query(model.schedule, model.subject.name).join(model.subject, model.schedule.subject.id==model.subject.id)
+    rows =(db.query(model.schedule, model.subject.name).join(model.subject, model.schedule.subject_id==model.subject.id)
           .filter(model.subject.user_id==user_id).all())
     
     return[{
-        "id": s.id , "day":s.dat,"duration":s.duration,"subject":s.subject_id,"subject_name":name
+        "id": s.id , "day":s.day,"duration":s.duration,"subject":s.subject_id,"subject_name":name
     }
+
     for s ,name in rows ]
+
+def get_today_schedule(db:Session,user_id :int):
+    today_name =Day_Map[datetime.now().weekday()]
+    rows=(db.query(model.schedule, model.subject.name,model.progress.status)
+          .join(model.subject,model.schedule.subject_id==model.subject.id)
+          .outerjoin(model.progress , model.progress.schedule_id==model.schedule.id).filter(model.subject.user_id==user_id ,model.schedule.day == today_name)
+          .all())
+    
+    return [
+        {"schedule_id":s.id, "subject":name,"duration": s.duration,"status":status or "pending"}
+        for s, name, status in rows
+    ]
+
+    
+    
  
 
 
