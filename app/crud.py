@@ -27,3 +27,10 @@ def login_user(db:Session, email ,password):
         "access_token" :token , "user_id":user.id
     }
 
+def create_subject(db:Session, subject):
+    obj = model.subject(**subject.dict()) # subject.dict() is using for unpack the  dictionary 
+    db.add(obj)
+    db.commit()
+    db.refresh(obj)
+    return obj
+
