@@ -60,7 +60,17 @@ def get_schedule(user_id :int , db: Session =Depends(get_db)):
 def today_schedule(user_id:int , db:Session=Depends(get_schedule)):
     return crud.get_today_schedule(db ,user_id)
 
+# now  progress part
+@app.put("/progress/{schedule_id}",response_model=schemas.ProgressResponse)
+def update_progress(schedule_id :int ,status :str ,db:Session=Depends(get_db)):
+    if status not in ("pending", "completed"):
+         raise HTTPException(status_code=422,detail="Status must be 'pending' or 'completed'")
+    result = crud.update_progress(db,schedule_id,status)
+    if not result:
+        raise HTTPException(status_code=404,detail="Progress record not found")
+    return result
 
-
-
-
+@app.get("/report/{user_id}", esponse_model=schemas.WeeklyReport)
+def report(user_id:int,db:Session =Depends(get_db)):
+    return crud.weekly_report(db,user_id)
+ 
