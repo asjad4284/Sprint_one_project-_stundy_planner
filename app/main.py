@@ -1,11 +1,11 @@
 from fastapi import FastAPI, Depends, HTTPException 
 from sqlalchemy.orm  import Session
-from typing import list 
+from typing import List 
 from app.database import engine , get_db
 from app import model ,schemas,crud
 from app.auth import verify_token
 
-model.Base.metadate.create_all(bind=engine)
+model.Base.metadata.create_all(bind=engine)
 
 app =FastAPI(title="Study Planner")
 
@@ -37,7 +37,7 @@ def me(payload : dict = Depends(verify_token)):
 def create_subject(subject :schemas.SubjectCreate,db :Session =Depends(get_db)):
     return crud.create_subject(db,subject)  
                  
-@app.get("/subject/{user_id}", response_model=list[schemas.SubjectResponse])  
+@app.get("/subject/{user_id}", response_model=List[schemas.SubjectResponse])  
 def list_subjects(user_id:int ,db:Session =Depends(get_db)):
     return crud.get_subject(db ,user_id)
 # adding deleting feature 
@@ -57,7 +57,7 @@ def get_schedule(user_id :int , db: Session =Depends(get_db)):
     return crud.get_schedule_for_user(db, user_id)
 
 @app.get("/schedule/today/{user_id}")
-def today_schedule(user_id:int , db:Session=Depends(get_schedule)):
+def today_schedule(user_id:int , db:Session=Depends(get_db)):
     return crud.get_today_schedule(db ,user_id)
 
 # now  progress part
@@ -70,7 +70,7 @@ def update_progress(schedule_id :int ,status :str ,db:Session=Depends(get_db)):
         raise HTTPException(status_code=404,detail="Progress record not found")
     return result
 
-@app.get("/report/{user_id}", esponse_model=schemas.WeeklyReport)
+@app.get("/report/{user_id}", response_model=schemas.WeeklyReport)
 def report(user_id:int,db:Session =Depends(get_db)):
-    return crud.weekly_report(db,user_id)
+    return crud.weekly_reports(db,user_id)
  
