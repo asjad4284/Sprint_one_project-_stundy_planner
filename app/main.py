@@ -26,9 +26,24 @@ def login(email:str, password:str,db:Session = Depends(get_db)):
     if not result:
         raise HTTPException(status_code=401 , detail="Invalide  credentials")
     return result
+# /me is used to checking currently logged in user using token
+@app.get("/me")  
+def me(payload : dict = Depends(verify_token)):
+    return{
+        "email":payload.get("sub")
+    }    
 
-                
+@app.post("/subjects",response_model=schemas.SubjectResponse)    
+def create_subject(subject :schemas.SubjectCreate,db :Session =Depends(get_db)):
+    return crud.create_subject(db,subject)  
                  
+@app.get("/subject/{user_id}", response_model=list[schemas.SubjectResponse])  
+def list_subjects(user_id:int ,db:Session =Depends(get_db)):
+    return crud.get_subject(db ,user_id)
+# adding deleting feature 
+@app.delete("/subjects/{subject_id}")
+def  delete_subject(subject_id:int,db:Session=Depends(get_db)):
+    result= crud.delete_subject(db,subject_id)
 
 
 
