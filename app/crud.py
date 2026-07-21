@@ -81,8 +81,47 @@ def get_today_schedule(db:Session,user_id :int):
         {"schedule_id":s.id, "subject":name,"duration": s.duration,"status":status or "pending"}
         for s, name, status in rows
     ]
+# update progress 
+def update_progress(db :Session,schedule_id :int ,status :str):
+    progress = db.query(model.progress).filter(model.progress.schedule_id== schedule_id).first()
+    if not progress:
+        return None
+    progress.status =status
+    db.commit()
+    db.refresh(progress)
+    return progress
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     
+
     
  
 
