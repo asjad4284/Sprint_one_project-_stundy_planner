@@ -1,24 +1,24 @@
 from datetime import datetime
 from sqlalchemy.orm import Session
-from app import model
+from app import models
 from app.utils import hash_password, verify_password
 from app.auth import create_token
 
 Day_Map={0:"Mon",1:"Tue",2:"Wed",3:"Thu",4:"Fri",5:"Sat",6:"Sun"}
 # creating  new  user  in  database 
 def create_user(db:Session ,user):
-    existing= db.query(model.user).filter(model.user.email == user.email).first()
+    existing= db.query(models.user).filter(models.user.email == user.email).first()
 
     if existing:
         return None
-    obj = model.user(email=user.email , password =hash_password(user.password))
+    obj = models.user(email=user.email , password =hash_password(user.password))
     db.add(obj)
     db.commit()
     db.refresh(obj)
     return obj
 
 def login_user(db:Session, email ,password):
-    user= db.query(model.user).filter(model.user.email ==email).first()
+    user= db.query(models.user).filter(models.user.email ==email).first()
     if not  user or not verify_password(password, user.password):
         return None
     
@@ -28,7 +28,7 @@ def login_user(db:Session, email ,password):
     }
 
 def create_subject(db:Session, subject):
-    obj = model.subject(**subject.dict()) # subject.dict() is using for unpack the  dictionary 
+    obj = models.subject(**subject.dict()) # subject.dict() is using for unpack the  dictionary 
     db.add(obj)
     db.commit()
     db.refresh(obj)
@@ -36,10 +36,10 @@ def create_subject(db:Session, subject):
 
 
 def get_subject(db :Session, user_id :int):
-    return db.query(model.subject).filter(model.subject.user_id==user_id).all()
+    return db.query(models.subject).filter(models.subject.user_id==user_id).all()
 
 def del_subject(db:Session , subject_id :int):
-    obj = db.query(model.subject).filter(model.subject.id==subject_id).first()
+    obj = db.query(models.subject).filter(models.subject.id==subject_id).first()
     if  not obj:
         return None
 
@@ -49,20 +49,20 @@ def del_subject(db:Session , subject_id :int):
 
 
 def create_schedule(db :Session ,schedule):
-    obj = model.schedule(**schedule.dict())
+    obj = models.schedule(**schedule.dict())
     db.add(obj)
     db.commit()
     db.refresh(obj)
 
-    progress =  model.progress(status ="pending" ,schedule_id=obj.id)
+    progress =  models.progress(status ="pending" ,schedule_id=obj.id)
     db.add(progress)
     db.commit()
     db.refresh(obj)
     return obj
     
 def get_schedule_for_user(db:Session,user_id :int):
-    rows =(db.query(model.schedule, model.subject.name).join(model.subject, model.schedule.subject_id==model.subject.id)
-          .filter(model.subject.user_id==user_id).all())
+    rows =(db.query(models.schedule, models.subject.name).join(models.subject, models.schedule.subject_id==models.subject.id)
+          .filter(models.subject.user_id==user_id).all())
     
     return[{
         "id": s.id , "day":s.day,"duration":s.duration,"subject":s.subject_id,"subject_name":name
@@ -72,9 +72,9 @@ def get_schedule_for_user(db:Session,user_id :int):
 
 def get_today_schedule(db:Session,user_id :int):
     today_name =Day_Map[datetime.now().weekday()]
-    rows=(db.query(model.schedule, model.subject.name,model.progress.status)
-          .join(model.subject,model.schedule.subject_id==model.subject.id)
-          .outerjoin(model.progress , model.progress.schedule_id==model.schedule.id).filter(model.subject.user_id==user_id ,model.schedule.day == today_name)
+    rows=(db.query(models.schedule, models.subject.name,models.progress.status)
+          .join(models.subject,models.schedule.subject_id==models.subject.id)
+          .outerjoin(models.progress , models.progress.schedule_id==models.schedule.id).filter(models.subject.user_id==user_id ,models.schedule.day == today_name)
           .all())
     
     return [
@@ -83,7 +83,7 @@ def get_today_schedule(db:Session,user_id :int):
     ]
 # update progress 
 def update_progress(db :Session,schedule_id :int ,status :str):
-    progress = db.query(model.progress).filter(model.progress.schedule_id== schedule_id).first()
+    progress = db.query(models.progress).filter(models.progress.schedule_id== schedule_id).first()
     if not progress:
         return None
     progress.status =status
@@ -93,9 +93,9 @@ def update_progress(db :Session,schedule_id :int ,status :str):
 
 def weekly_reports(db:Session ,user_id:int):
     rows=(
-        db.query(model.progress ,model.schedule.day).join(model.schedule , model.progress.schedule_id==model.schedule.id)
-        .join(model.subject , model.schedule.subject_id== model.subject.id)
-        .filter(model.subject.user_id==user_id).all()
+        db.query(models.progress ,models.schedule.day).join(models.schedule , models.progress.schedule_id==models.schedule.id)
+        .join(models.subject , models.schedule.subject_id== models.subject.id)
+        .filter(models.subject.user_id==user_id).all()
     )
     total = len(rows)
     completed = 0

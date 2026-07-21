@@ -41,9 +41,9 @@ class ScheduleResponse(BaseModel):
     class Config:
         from_attribute = True
 
-class ProgressCreste(BaseModel):
+class ProgressCreate(BaseModel):
     status: str
-    schedule_id = int
+    schedule_id : int
 
 class ProgressResponse(BaseModel):
     id : int
@@ -57,7 +57,7 @@ class WeeklyReport(BaseModel):
     completed: int
     pending :int 
     precent : float
-    [by_day] : Dict[str, int]
+    by_day : Dict[str, int]
 
     
 

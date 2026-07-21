@@ -2,10 +2,10 @@ from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm  import Session
 from typing import List 
 from app.database import engine , get_db
-from app import model ,schemas,crud
+from app import models, schemas,crud 
 from app.auth import verify_token
 
-model.Base.metadata.create_all(bind=engine)
+models.Base.metadata.create_all(bind=engine)
 
 app =FastAPI(title="Study Planner")
 
