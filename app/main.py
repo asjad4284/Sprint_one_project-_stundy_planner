@@ -44,6 +44,23 @@ def list_subjects(user_id:int ,db:Session =Depends(get_db)):
 @app.delete("/subjects/{subject_id}")
 def  delete_subject(subject_id:int,db:Session=Depends(get_db)):
     result= crud.delete_subject(db,subject_id)
+    if  not result:
+        raise HTTPException(status_code=404,detail="Subject not found")
+    return {"msg": "Deleted"}
+
+@app.post("/schedule", response_model = schemas.ScheduleCreate)
+def create_schedule(schedule: schemas.ScheduleCreate,db:Session =Depends(get_db)):
+    return crud.create_schedule(db,schedule)
+
+@app.get("/schedule/{user_id}")
+def get_schedule(user_id :int , db: Session =Depends(get_db)):
+    return crud.get_schedule_for_user(db, user_id)
+
+@app.get("/schedule/today/{user_id}")
+def today_schedule(user_id:int , db:Session=Depends(get_schedule)):
+    return crud.get_today_schedule(db ,user_id)
+
+
 
 
 
