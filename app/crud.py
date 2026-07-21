@@ -4,7 +4,7 @@ from app import model
 from app.utils import hash_password, verify_password
 from app.auth import create_token
 
-Day_Map={0:"Mon",1:"Tue",2:"Wed",3:"Thu",4:"fri",5:"Sat",6:"Sun"}
+Day_Map={0:"Mon",1:"Tue",2:"Wed",3:"Thu",4:"Fri",5:"Sat",6:"Sun"}
 # creating  new  user  in  database 
 def create_user(db:Session ,user):
     existing= db.query(model.user).filter(model.user.email == user.email).first()
@@ -38,7 +38,7 @@ def create_subject(db:Session, subject):
 def get_subject(db :Session, user_id :int):
     return db.query(model.subject).filter(model.subject.user_id==user_id).all()
 
-def del_suject(db:Session , subject_id :int):
+def del_subject(db:Session , subject_id :int):
     obj = db.query(model.subject).filter(model.subject.id==subject_id).first()
     if  not obj:
         return None
@@ -54,8 +54,8 @@ def create_schedule(db :Session ,schedule):
     db.commit()
     db.refresh(obj)
 
-    progess =  model.progress(status ="pending" ,schedule_id=obj.id)
-    db.add(progess)
+    progress =  model.progress(status ="pending" ,schedule_id=obj.id)
+    db.add(progress)
     db.commit()
     db.refresh(obj)
     return obj
@@ -90,6 +90,32 @@ def update_progress(db :Session,schedule_id :int ,status :str):
     db.commit()
     db.refresh(progress)
     return progress
+
+def weekly_reports(db:Session ,user_id:int):
+    rows=(
+        db.query(model.progress ,model.schedule.day).join(model.schedule , model.progress.schedule_id==model.schedule.id)
+        .join(model.subject , model.schedule.subject_id== model.subject.id)
+        .filter(model.subject.user_id==user_id).all()
+    )
+    total = len(rows)
+    completed = 0
+    by_day = {}
+    for p, day in rows:
+        if p.status == "completed":
+            completed += 1
+
+            if day not in by_day:
+                by_day[day] = 0
+
+            by_day[day] += 1   
+
+    return{
+        "total":total,
+        "completed": completed,
+        "pending":total-completed,
+        "percent":round((completed/total)*100,1) if total else 0.0,
+        "by_day":by_day
+    }     
 
 
 
