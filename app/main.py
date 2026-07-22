@@ -37,7 +37,7 @@ def me(payload : dict = Depends(verify_token)):
 def create_subject(subject :schemas.SubjectCreate,db :Session =Depends(get_db)):
     return crud.create_subject(db,subject)  
                  
-@app.get("/subject/{user_id}", response_model=List[schemas.SubjectResponse])  
+@app.get("/subjects/{user_id}", response_model=List[schemas.SubjectResponse])  
 def list_subjects(user_id:int ,db:Session =Depends(get_db)):
     return crud.get_subject(db ,user_id)
 # adding deleting feature 
@@ -48,7 +48,7 @@ def  delete_subject(subject_id:int,db:Session=Depends(get_db)):
         raise HTTPException(status_code=404,detail="Subject not found")
     return {"msg": "Deleted"}
 
-@app.post("/schedule", response_model = schemas.ScheduleCreate)
+@app.post("/schedule", response_model = schemas.ScheduleResponse)
 def create_schedule(schedule: schemas.ScheduleCreate,db:Session =Depends(get_db)):
     return crud.create_schedule(db,schedule)
 
