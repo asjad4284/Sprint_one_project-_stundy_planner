@@ -11,7 +11,7 @@ def create_token(data : dict):
     return jwt.encode(to_encode,SECRET_KEY,algorithm=ALGORITHM)
 
 def verify_token(authorization:str= Header(...)):
-    token = authorization.replace("Bearer","")
+    token = authorization.replace("Bearer ","")
     try:
         payload = jwt.decode(token , SECRET_KEY,algorithms=[ALGORITHM])
         return payload
