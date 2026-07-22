@@ -29,17 +29,17 @@ class SubjectResponse(BaseModel):
     class Config:
         from_attributes = True
 class ScheduleCreate(BaseModel):
-    day : int
+    day : str
     duration :int
     subject_id: int
 
 class ScheduleResponse(BaseModel):
     id :int
-    day:int
+    day:str
     duration:int
     subject_id :int
     class Config:
-        from_attribute = True
+        from_attributes = True
 
 class ProgressCreate(BaseModel):
     status: str
@@ -50,13 +50,13 @@ class ProgressResponse(BaseModel):
     status : str
     schedule_id: int
     class Config:
-        from_attribute = True
+        from_attributes = True
 
 class WeeklyReport(BaseModel):
     total: int 
     completed: int
     pending :int 
-    precent : float
+    percent : float
     by_day : Dict[str, int]
 
     
