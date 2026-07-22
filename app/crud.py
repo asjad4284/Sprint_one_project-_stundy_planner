@@ -38,7 +38,7 @@ def create_subject(db:Session, subject):
 def get_subject(db :Session, user_id :int):
     return db.query(models.subject).filter(models.subject.user_id==user_id).all()
 
-def del_subject(db:Session , subject_id :int):
+def delete_subject(db:Session , subject_id :int):
     obj = db.query(models.subject).filter(models.subject.id==subject_id).first()
     if  not obj:
         return None
