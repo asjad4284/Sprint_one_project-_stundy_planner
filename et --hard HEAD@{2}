@@ -1,0 +1,48 @@
+[33ma9d9c1b[m[33m ([m[1;36mHEAD[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{0}: pull origin main --rebase (start): checkout a9d9c1bcb525ce932af9a92057d8e5c90a957c93
+[33mdb059a7[m[33m ([m[1;32mmain[m[33m)[m HEAD@{1}: reset: moving to HEAD
+[33mdb059a7[m[33m ([m[1;32mmain[m[33m)[m HEAD@{2}: reset: moving to HEAD
+[33mdb059a7[m[33m ([m[1;32mmain[m[33m)[m HEAD@{3}: commit: finlizing and debugging
+[33m32062cf[m HEAD@{4}: revert: Reapply "Adding the Calender"
+[33m2a1e2a7[m HEAD@{5}: revert: Revert "Adding the Calender"
+[33mf5954ad[m HEAD@{6}: reset: moving to f5954ad
+[33mf5954ad[m HEAD@{7}: reset: moving to HEAD~2
+[33m7e6983d[m HEAD@{8}: commit: Adding the Progress
+[33mc27c68d[m HEAD@{9}: commit: Adding the Calender
+[33mf5954ad[m HEAD@{10}: commit: Adding the Calender
+[33m25d98b4[m HEAD@{11}: commit: Formatting and remove error
+[33m5c625ec[m HEAD@{12}: commit: checking the error
+[33md24e658[m HEAD@{13}: commit: completeing fastapi logic
+[33mc4b36e2[m HEAD@{14}: commit: adding schedule feature
+[33m2f369dd[m HEAD@{15}: commit: adding deleting feature
+[33m3cea712[m HEAD@{16}: commit: adding login feature
+[33md966864[m HEAD@{17}: commit: creating main file
+[33me0f8fc0[m HEAD@{18}: commit: adding weekl reports feaature
+[33m527bf9a[m HEAD@{19}: commit: adding update progress feature
+[33m617fd71[m HEAD@{20}: commit: adding more feature
+[33m67e4f54[m HEAD@{21}: commit: get schedule
+[33m2210673[m HEAD@{22}: commit: adding deleted feature ofdubject
+[33mf6888de[m HEAD@{23}: commit: adding deleted feature ofdubject
+[33mdaefd8f[m HEAD@{24}: commit: adding more feature
+[33md29e100[m HEAD@{25}: commit: creating fun of add subjects
+[33med60a3b[m HEAD@{26}: commit: login feature
+[33m9eda263[m HEAD@{27}: commit: creating new user
+[33ma1e0186[m HEAD@{28}: commit: creating crud file
+[33mafd88ba[m HEAD@{29}: commit: verification feature
+[33mf4028bf[m HEAD@{30}: commit: correcting name
+[33m5913037[m HEAD@{31}: commit: creating token feature
+[33mdd3dace[m HEAD@{32}: commit: Adding Auth file
+[33m6364c00[m HEAD@{33}: commit: Adding password verfication feature
+[33m4290a44[m HEAD@{34}: commit: password hashing
+[33mb5ec9f2[m HEAD@{35}: commit: Adding password checking file
+[33mf40042d[m HEAD@{36}: commit: Adding object mapping of WeeklyReport
+[33m850adcb[m HEAD@{37}: commit: Adding object mapping of progress
+[33m415c0d3[m HEAD@{38}: commit: obect mapping of Schedule
+[33m1896d88[m HEAD@{39}: commit: Adding extra info
+[33mfb392c0[m HEAD@{40}: commit: Adding schema filde for input validation
+[33mdb5a8c5[m HEAD@{41}: commit: Adding progress table
+[33mf14b55a[m HEAD@{42}: commit: Adding table subjects
+[33m58b6b2b[m HEAD@{43}: commit: adding user table
+[33m6fdf4e3[m HEAD@{44}: commit: creating model file and adding import feature
+[33m270b9b3[m HEAD@{45}: commit: ading dependce in database
+[33m19904ce[m HEAD@{46}: commit: ading dependce in database
+[33mdba277d[m HEAD@{47}: commit (initial): created database

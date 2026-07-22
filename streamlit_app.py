@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+from collections import defaultdict
 BASE_URL = "http://127.0.0.1:8000"
 DAYS_ORDER = ["Mon", "Tue","Wed","Thu", "Fri","Sat","Sun"]
 
@@ -13,6 +14,11 @@ if "user_id" not in st.session_state:
     st.session_state.user_id = None
 if "schedule" not in st.session_state:
     st.session_state.schedule = []
+def require_login():
+    if not st.session_state.token:
+        st.error("Please login first")
+        st.stop()    
+
 
 menu =["User","Login","Subject","Schedule","Today", "Progress","Dashboard"]   
 
@@ -70,9 +76,7 @@ elif choice == "Login":
     # Subjects 
         
 elif choice == "Subject":
-    if not st.session_state.token:
-        st.error("Please login first")
-        st.stop()
+    require_login() 
 
     st.header("Add a Subject")
     name = st.text_input("Name")
@@ -107,10 +111,8 @@ elif choice == "Subject":
 
 # Adding the Sehedule
 elif choice == "Schedule":
-    if not st.session_state.token:
-        st.error("Please login first")
-        st.stop()
-
+    require_login() 
+    
     headers = {"Authorization":f"Bearer {st.session_state.token}"}
 
     st.header("Add to Schedule")
@@ -170,10 +172,7 @@ elif choice == "Schedule":
     ]
 
 
-            st.table(clean_data)
-
-
-    from collections import defaultdict
+        st.table(clean_data)
 
     if schedule and isinstance(schedule, list):
         grouped = defaultdict(list)
@@ -193,14 +192,10 @@ elif choice == "Schedule":
 
 #Adding  Today events
 elif choice == "Today":
-
-    if not st.session_state.token:
-        st.error("Please login first")
-        st.stop()
-
+    require_login() 
     headers = {"Authorization": f"Bearer {st.session_state.token}"}
 
-    st.header("Today's Subjects")
+    st.header("Today's Tasks")
     user_id = st.session_state.user_id
     if st.button("Show Today"):
         res = requests.get(f"{BASE_URL}/schedule/today/{user_id}", headers=headers)
@@ -267,11 +262,7 @@ elif choice == "Progress":
             st.error(data if isinstance(data, str) else data.get("detail", "Error"))           
 #Adding Dashborad            
 elif choice == "Dashboard":
-
-    if not st.session_state.token:
-        st.error("Please login first")
-        st.stop()
-
+    require_login()  
     headers = {"Authorization": f"Bearer {st.session_state.token}"}
 
     st.header("Weekly Progress Report")
