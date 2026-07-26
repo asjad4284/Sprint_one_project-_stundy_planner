@@ -1,7 +1,8 @@
 import streamlit as st
 import requests
+import os
 from collections import defaultdict
-BASE_URL = "http://127.0.0.1:8000"
+BASE_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000")
 DAYS_ORDER = ["Mon", "Tue","Wed","Thu", "Fri","Sat","Sun"]
 
 st.title("Study Planner")
